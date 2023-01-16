@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {
-  before, GET, route,
+  before, DELETE, GET, POST, route,
 } from 'awilix-express';
 import { BaseRoute } from '../common/baseRoute';
 import InfoUserMiddleware from '../middleware/infoUser.middleware';
@@ -19,7 +19,7 @@ export default class PostsRoute extends BaseRoute {
 
   @route('/follow/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
-  @GET()
+  @POST()
   async follow(req: Request, res: Response) {
     try {
       const ret = await this.userService.follow();
@@ -32,7 +32,7 @@ export default class PostsRoute extends BaseRoute {
 
   @route('/unfollow/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
-  @GET()
+  @DELETE()
   async unfollow(req: Request, res: Response) {
     try {
       const ret = await this.userService.unfollow();
@@ -75,7 +75,6 @@ export default class PostsRoute extends BaseRoute {
   async getMutualFriends(req: Request, res: Response) {
     try {
       const ret = await this.userService.mutualFriends();
-
       this.ok(res, ret);
     } catch (err: any) {
       this.fail(res, err);

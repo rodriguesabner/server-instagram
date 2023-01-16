@@ -29,4 +29,18 @@ export default class PostsRoute extends BaseRoute {
       this.fail(res, err);
     }
   }
+
+  @route('/comments/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @GET()
+  async getComments(req: Request, res: Response) {
+    try {
+      const { idPost } = req.params;
+      const ret = await this.postsService.getCommentsPost(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
 }
