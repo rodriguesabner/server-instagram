@@ -17,6 +17,32 @@ export default class PostsRoute extends BaseRoute {
     this.userService = userService;
   }
 
+  @route('/follow/:username')
+  @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
+  @GET()
+  async follow(req: Request, res: Response) {
+    try {
+      const ret = await this.userService.follow();
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/unfollow/:username')
+  @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
+  @GET()
+  async unfollow(req: Request, res: Response) {
+    try {
+      const ret = await this.userService.unfollow();
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
   @route('/followers/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()

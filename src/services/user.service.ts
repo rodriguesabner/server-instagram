@@ -2,7 +2,7 @@
 import { IgApiClient } from 'instagram-private-api';
 import { ContainerInstance } from '../interfaces/container.interface';
 import TargetUserInfoProps from '../interfaces/infoUser.interface';
-import { executeSleep, sleep } from '../common/utils';
+import { executeSleep } from '../common/utils';
 
 class PostsService {
   private instagram: IgApiClient;
@@ -18,11 +18,18 @@ class PostsService {
     return this.targetUserInfo;
   }
 
-  async follow(username: string) {
-    const pk = await this.instagram.user.getIdByUsername(username);
-    const info: any = await this.instagram.user.info(pk);
+  async follow() {
+    const userId = this.targetUserInfo.pk;
 
-    return info;
+    const response = await this.instagram.friendship.create(userId);
+    return response;
+  }
+
+  async unfollow() {
+    const userId = this.targetUserInfo.pk;
+
+    const response = await this.instagram.friendship.destroy(userId);
+    return response;
   }
 
   async getFollowers() {
