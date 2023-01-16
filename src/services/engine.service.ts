@@ -12,8 +12,9 @@ import inquirer from 'inquirer';
 import shortid from 'shortid';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import { Container, InstagramInstanceProps } from '../interfaces/container.interface';
+import { Container } from '../interfaces/container.interface';
 import CookiesProps from '../interfaces/cookies.interface';
+import InstagramInstanceProps from '../interfaces/instagram.interface';
 
 class EngineService {
   private cookiesUtil: CookiesProps;

@@ -1,12 +1,10 @@
 /* eslint-disable no-param-reassign */
 import fs from 'fs';
-import { InstagramInstanceProps } from '../../interfaces/container.interface';
+import { InstagramInstanceProps } from '../../interfaces/instagram.interface';
 
 class CookiesUtils {
   public saveCookies(username: string, cookies: any, state: any) {
-    const filename = username;
-
-    const cookiepath = `cookies/${(filename).toLowerCase()}.json`;
+    const cookiepath = `cookies/${(username).toLowerCase()}.json`;
     if (!fs.existsSync('cookies/')) {
       fs.mkdirSync('cookies/');
     }

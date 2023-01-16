@@ -1,28 +1,13 @@
 import { AwilixContainer } from 'awilix';
-import { IgApiClient } from 'instagram-private-api';
 import CookiesProps from './cookies.interface';
-
-export type ConfigProps = {
-    hostName: string;
-    web: {
-        port: string;
-    },
-    webhook: {
-        active: boolean;
-        url: string;
-    },
-}
+import TargetUserInfoProps from './infoUser.interface';
+import InstagramInstanceProps from './instagram.interface';
+import ConfigProps from './common.interface';
 
 export interface Container extends AwilixContainer {
     sessions: [];
     cookiesUtil: CookiesProps;
-    config: ConfigProps
-}
-
-export interface InstagramInstanceProps extends IgApiClient {
-    loggedInUser?: any;
-    shortid?: string;
-    db?: any;
+    config: ConfigProps;
 }
 
 export interface ScopeProps extends AwilixContainer {
@@ -30,5 +15,6 @@ export interface ScopeProps extends AwilixContainer {
 }
 
 export interface ContainerInstance extends Container {
+    targetUserInfo: TargetUserInfoProps;
     scope: ScopeProps;
 }

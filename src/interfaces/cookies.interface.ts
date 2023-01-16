@@ -1,4 +1,4 @@
-import { InstagramInstanceProps } from './container.interface';
+import { InstagramInstanceProps } from './instagram.interface';
 
 interface CookiesProps {
     saveCookies(
