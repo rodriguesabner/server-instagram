@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { asValue } from 'awilix';
-import { InstagramInstanceProps } from '../interfaces/container.interface';
 
 // eslint-disable-next-line consistent-return
 const IsConnectedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  // @ts-ignore
   const { container } = req;
-  // @ts-ignore
   const { session_name } = req.user;
 
   const sessions = container.resolve('sessions');

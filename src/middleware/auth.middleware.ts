@@ -11,8 +11,11 @@ const AuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const accessToken = authorization.split(' ')[1];
-    const ret: any = jwt.verify(accessToken, process.env.JWT_SECRET ?? 'define');
-    // @ts-ignore
+    const ret: any = jwt.verify(
+      accessToken,
+      process.env.JWT_SECRET ?? 'define',
+    );
+
     req.user = {
       session_name: ret.session_name,
     };

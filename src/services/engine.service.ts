@@ -47,7 +47,7 @@ class EngineService extends BaseEngine {
         build: ig.state.build,
       };
 
-      this.cookiesUtil.saveCookies(cookies, state);
+      this.cookiesUtil.saveCookies(username, cookies, state);
 
       await ig.state.deserializeCookieJar(JSON.stringify(cookies));
       ig.state.deviceString = state.deviceString;

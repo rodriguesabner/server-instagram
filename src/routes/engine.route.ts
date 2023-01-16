@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { before, POST, route } from 'awilix-express';
+import { POST, route } from 'awilix-express';
 import jwt from 'jsonwebtoken';
 import { BaseRoute } from '../common/baseRoute';
 import EngineService from '../services/engine.service';
@@ -34,20 +34,6 @@ export default class MessageRoute extends BaseRoute {
       });
     } catch (err: any) {
       this.fail(res, err);
-    }
-  }
-
-  @route('/session/stop')
-  @before([])
-  @POST()
-  async stop(req: Request, res: Response) {
-    const { FROM_PHONE_NUMBER_ID: session } = req.params;
-
-    try {
-      // const ret = this.engineService.stopSession(session);
-      // this.ok(res, ret);
-    } catch (err: any) {
-      // this.fail(res, err);
     }
   }
 }

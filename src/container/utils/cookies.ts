@@ -3,8 +3,8 @@ import fs from 'fs';
 import { InstagramInstanceProps } from '../../interfaces/container.interface';
 
 class CookiesUtils {
-  public saveCookies(cookies: any, state: any) {
-    const filename = process.env.IG_USERNAME ?? 'undefined';
+  public saveCookies(username: string, cookies: any, state: any) {
+    const filename = username;
 
     const cookiepath = `cookies/${(filename).toLowerCase()}.json`;
     if (!fs.existsSync('cookies/')) {
