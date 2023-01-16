@@ -5,15 +5,10 @@ import { InstagramInstanceProps } from '../interfaces/container.interface';
 const InfoUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const { container } = req;
   const { username } = req.params;
-  const { session_name } = req.user;
 
-  const sessions = container.resolve('sessions');
+  const scope = container.resolve('scope');
 
-  if (sessions.length <= 0 || sessions[session_name]) {
-    return res.status(400).json({ error: 'Session not started' });
-  }
-
-  const ig = sessions.find((session: any) => session === session_name) as InstagramInstanceProps;
+  const ig = scope.instance as InstagramInstanceProps;
   const pk = await ig.user.getIdByUsername(username);
   const info = await ig.user.info(pk);
 

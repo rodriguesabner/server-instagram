@@ -26,7 +26,7 @@ export interface InstagramInstanceProps extends IgApiClient {
 }
 
 export interface ScopeProps extends AwilixContainer {
-    ig: InstagramInstanceProps;
+    instance: InstagramInstanceProps;
 }
 
 export interface ContainerInstance extends Container {

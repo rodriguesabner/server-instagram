@@ -6,6 +6,7 @@ import { BaseRoute } from '../common/baseRoute';
 import PostsService from '../services/posts.service';
 import InfoUserMiddleware from '../middleware/infoUser.middleware';
 import AuthMiddleware from '../middleware/auth.middleware';
+import IsConnectedMiddleware from '../middleware/isConnected.middleware';
 
 @route('/posts')
 export default class PostsRoute extends BaseRoute {
@@ -17,7 +18,7 @@ export default class PostsRoute extends BaseRoute {
   }
 
   @route('/recent/:username')
-  @before([AuthMiddleware, InfoUserMiddleware])
+  @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()
   async getUserRecentPosts(req: Request, res: Response) {
     // @ts-ignore

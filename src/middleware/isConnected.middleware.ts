@@ -7,9 +7,11 @@ const IsConnectedMiddleware = async (req: Request, res: Response, next: NextFunc
   const { session_name } = req.user;
 
   const sessions = container.resolve('sessions');
+  const currentSession = sessions.find((session: any) => session.session_name === session_name);
+
   try {
-    if (sessions && sessions[session_name]) {
-      const { ig } = sessions[session_name];
+    if (currentSession != null) {
+      const ig = currentSession.instance;
       await ig.account.currentUser();
 
       Object.assign(req, { instance: ig });
@@ -25,13 +27,13 @@ const IsConnectedMiddleware = async (req: Request, res: Response, next: NextFunc
     res.status(404).json({
       response: null,
       status: 'Disconnected',
-      message: 'A sessão do WhatsApp não está ativa.',
+      message: 'A sessão do Instagram não está ativa.',
     });
   } catch (error) {
     res.status(404).json({
       response: null,
       status: 'Disconnected',
-      message: 'A sessão do WhatsApp não está ativa.',
+      message: 'A sessão do Instagram não está ativa.',
     });
   }
 };

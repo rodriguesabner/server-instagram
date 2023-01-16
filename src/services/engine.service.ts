@@ -93,7 +93,11 @@ class EngineService {
       console.log('Online Mode disabled');
     }
 
-    this.sessions.push({ [user.username]: ig });
+    this.sessions.push({
+      session_name: username,
+      instance: ig,
+    });
+
     return this.clone(result);
   }
 

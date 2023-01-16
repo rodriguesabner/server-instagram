@@ -5,15 +5,8 @@ import CookiesProps from '../interfaces/cookies.interface';
 class PostsService {
   private instagram: IgApiClient;
 
-  private cookiesUtil: CookiesProps;
-
   constructor(opts: ContainerInstance) {
-    this.instagram = opts.scope.ig;
-    this.cookiesUtil = opts.cookiesUtil;
-  }
-
-  private sanitizePhone(phone: string): Array<string> {
-    return phone.split(',');
+    this.instagram = opts.scope.instance;
   }
 
   async getUserRecentPosts(targetUserInfo: any) {

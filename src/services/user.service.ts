@@ -5,7 +5,7 @@ class PostsService {
   private instagram: IgApiClient;
 
   constructor(opts: ContainerInstance) {
-    this.instagram = opts.scope.ig;
+    this.instagram = opts.scope.instance;
   }
 
   async getUserInfo(ig: InstagramInstanceProps, username: string) {
