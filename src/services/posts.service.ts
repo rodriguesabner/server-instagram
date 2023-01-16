@@ -1,16 +1,19 @@
 import { IgApiClient } from 'instagram-private-api';
 import { ContainerInstance } from '../interfaces/container.interface';
-import CookiesProps from '../interfaces/cookies.interface';
+import TargetUserInfoProps from '../interfaces/infoUser.interface';
 
 class PostsService {
   private instagram: IgApiClient;
 
+  private targetUserInfo: TargetUserInfoProps;
+
   constructor(opts: ContainerInstance) {
+    this.targetUserInfo = opts.targetUserInfo;
     this.instagram = opts.scope.instance;
   }
 
-  async getRecentPosts(targetUserInfo: any) {
-    const feed = await this.instagram.feed.user(targetUserInfo.pk);
+  async getRecentPosts() {
+    const feed = await this.instagram.feed.user(this.targetUserInfo.pk);
     const list = await feed.items();
 
     // To keep getting content, maybe on a future function:

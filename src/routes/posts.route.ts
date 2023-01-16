@@ -21,10 +21,8 @@ export default class PostsRoute extends BaseRoute {
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()
   async getRecentPosts(req: Request, res: Response) {
-    const { targetUserInfo } = req;
-
     try {
-      const ret = await this.postsService.getRecentPosts(targetUserInfo);
+      const ret = await this.postsService.getRecentPosts();
 
       this.ok(res, ret);
     } catch (err: any) {
