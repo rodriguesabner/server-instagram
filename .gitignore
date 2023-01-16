@@ -148,3 +148,10 @@ dist
 tokens
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+
+## Project Ignore
+cookies
+db
+accounts
+output
