@@ -20,12 +20,11 @@ export default class PostsRoute extends BaseRoute {
   @route('/recent/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()
-  async getUserRecentPosts(req: Request, res: Response) {
-    // @ts-ignore
+  async getRecentPosts(req: Request, res: Response) {
     const { targetUserInfo } = req;
 
     try {
-      const ret = await this.postsService.getUserRecentPosts(targetUserInfo);
+      const ret = await this.postsService.getRecentPosts(targetUserInfo);
 
       this.ok(res, ret);
     } catch (err: any) {

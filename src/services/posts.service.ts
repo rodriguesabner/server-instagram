@@ -9,7 +9,7 @@ class PostsService {
     this.instagram = opts.scope.instance;
   }
 
-  async getUserRecentPosts(targetUserInfo: any) {
+  async getRecentPosts(targetUserInfo: any) {
     const feed = await this.instagram.feed.user(targetUserInfo.pk);
     const list = await feed.items();
 
