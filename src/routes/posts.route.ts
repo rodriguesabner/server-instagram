@@ -4,7 +4,7 @@ import {
 } from 'awilix-express';
 import { BaseRoute } from '../common/baseRoute';
 import PostsService from '../services/posts.service';
-import InfoUserMiddleware from '../middleware/info.middleware';
+import InfoUserMiddleware from '../middleware/infoUser.middleware';
 import AuthMiddleware from '../middleware/auth.middleware';
 
 @route('/posts')

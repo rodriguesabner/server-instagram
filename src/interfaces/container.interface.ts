@@ -7,16 +7,10 @@ export type ConfigProps = {
     web: {
         port: string;
     },
-    // api: {},
     webhook: {
         active: boolean;
         url: string;
     },
-}
-
-export type ClientProps = {
-    // instance: Whatsapp;
-    session: any;
 }
 
 export interface Container extends AwilixContainer {
