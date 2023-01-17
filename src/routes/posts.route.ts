@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {
-  before, GET, route,
+  before, GET, POST, route,
 } from 'awilix-express';
 import { BaseRoute } from '../common/baseRoute';
 import PostsService from '../services/posts.service';
@@ -36,7 +36,23 @@ export default class PostsRoute extends BaseRoute {
   async getComments(req: Request, res: Response) {
     try {
       const { idPost } = req.params;
-      const ret = await this.postsService.getCommentsPost(idPost);
+      const ret = await this.postsService.getComments(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/comment/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @POST()
+  async comment(req: Request, res: Response) {
+    try {
+      const { idPost } = req.params;
+      const comment = req.body;
+
+      const ret = await this.postsService.commentPost(idPost, comment);
 
       this.ok(res, ret);
     } catch (err: any) {

@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
 import { IgApiClient } from 'instagram-private-api';
+// @ts-ignore
+import parser from 'instagram-id-to-url-segment';
 import { ContainerInstance } from '../interfaces/container.interface';
-import TargetUserInfoProps from '../interfaces/infoUser.interface';
 import { sleep } from '../common/utils';
 
 class PostsService {
@@ -32,7 +33,7 @@ class PostsService {
     return list;
   }
 
-  async getCommentsPost(postId: string, maxComments = 20) {
+  async getComments(postId: string, maxComments = 20) {
     const comments: any = [];
 
     try {
@@ -90,6 +91,19 @@ class PostsService {
       console.log('Wait a few minutes after getting a lot of comments');
       return comments;
     }
+  }
+
+  async commentPost(postId: string, content: string) {
+    await this.instagram.media.comment({
+      module: 'profile',
+      mediaId: postId,
+      text: content,
+    });
+
+    const timestamp = new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+    const link = `https://www.instagram.com/p/${parser.instagramIdToUrlSegment(postId)}`;
+
+    return console.log(`Commented media ${link} at ${timestamp}`);
   }
 }
 
