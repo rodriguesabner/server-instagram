@@ -73,4 +73,32 @@ export default class PostsRoute extends BaseRoute {
       this.fail(res, err);
     }
   }
+
+  @route('/like/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @POST()
+  async like(req: Request, res: Response) {
+    try {
+      const { idPost } = req.params;
+      const ret = await this.postsService.likePost(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/unlike/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @POST()
+  async unlike(req: Request, res: Response) {
+    try {
+      const { idPost } = req.params;
+      const ret = await this.postsService.unlikePost(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
 }

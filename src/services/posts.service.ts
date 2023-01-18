@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 // @ts-ignore
 import parser from 'instagram-id-to-url-segment';
+import _ from 'lodash';
 import { ContainerInstance } from '../interfaces/container.interface';
 import { sleep } from '../common/utils';
 import TargetUserInfoProps from '../interfaces/infoUser.interface';
@@ -101,6 +102,49 @@ class PostsService {
       module: 'profile',
       mediaId: postId,
       text: content,
+    });
+
+    const timestamp = new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+    const link = `https://www.instagram.com/p/${parser.instagramIdToUrlSegment(postId)}`;
+
+    return {
+      status: 'ok',
+      timestamp,
+      link,
+    };
+  }
+
+  async likePost(postId: string) {
+    await this.instagram.media.like({
+      mediaId: postId,
+      moduleInfo: {
+        module_name: 'profile',
+        user_id: this.instagram.loggedInUser.pk,
+        username: this.instagram.loggedInUser.username,
+
+      },
+      // @ts-ignore
+      d: _.sample([0, 1]),
+    });
+
+    const timestamp = new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+    const link = `https://www.instagram.com/p/${parser.instagramIdToUrlSegment(postId)}`;
+
+    return {
+      status: 'ok',
+      timestamp,
+      link,
+    };
+  }
+
+  async unlikePost(postId: string) {
+    await this.instagram.media.unlike({
+      mediaId: postId,
+      moduleInfo: {
+        module_name: 'profile',
+        user_id: this.instagram.loggedInUser.pk,
+        username: this.instagram.loggedInUser.username,
+      },
     });
 
     const timestamp = new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000;
