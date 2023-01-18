@@ -65,6 +65,32 @@ class InboxService {
 
     return directMessagesFormated;
   }
+
+  async getPendingInbox() {
+    const inboxPendingFeed = await this.instagram.feed.directPending();
+    const threads = await inboxPendingFeed.items();
+
+    const directMessagesPendingFormated = threads.map((dm: any) => ({
+      threadId: dm.thread_id,
+      threadIdV2: dm.thread_v2_id,
+      isGroup: dm.users.length !== 1,
+      users: dm.users,
+      lastMessage: {
+        timeStamp: dm.last_permanent_item.timestamp,
+        type: dm.last_permanent_item.item_type,
+        messageContent: (() => {
+          if (dm.last_permanent_item.link) return dm.last_permanent_item.link.text;
+          if (dm.last_permanent_item.text) return dm.last_permanent_item.text;
+          if (dm.last_permanent_item.media) return dm.last_permanent_item.media.image_versions2.candidates[0].url;
+          if (dm.last_permanent_item.animated_media) return dm.last_permanent_item.animated_media.images.fixed_height.url;
+          if (dm.last_permanent_item.like) return 'like';
+
+          return 'unknow';
+        })(),
+      },
+    }));
+    return directMessagesPendingFormated;
+  }
 }
 
 export default InboxService;

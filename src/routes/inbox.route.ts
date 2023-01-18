@@ -19,9 +19,22 @@ export default class InboxRoute extends BaseRoute {
   @route('/')
   @before([AuthMiddleware, IsConnectedMiddleware])
   @GET()
-  async getInfoUser(req: Request, res: Response) {
+  async getInbox(req: Request, res: Response) {
     try {
       const ret = await this.inboxService.getInbox();
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/pending')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @GET()
+  async getPendingInbox(req: Request, res: Response) {
+    try {
+      const ret = await this.inboxService.getPendingInbox();
 
       this.ok(res, ret);
     } catch (err: any) {
