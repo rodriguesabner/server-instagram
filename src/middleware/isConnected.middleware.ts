@@ -18,6 +18,7 @@ const IsConnectedMiddleware = async (req: Request, res: Response, next: NextFunc
 
       container.register({
         scope: asValue(req),
+        targetUserInfo: asValue(null),
       });
 
       next();

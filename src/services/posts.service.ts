@@ -4,15 +4,16 @@ import { IgApiClient } from 'instagram-private-api';
 import parser from 'instagram-id-to-url-segment';
 import { ContainerInstance } from '../interfaces/container.interface';
 import { sleep } from '../common/utils';
+import TargetUserInfoProps from '../interfaces/infoUser.interface';
 
 class PostsService {
   private instagram: IgApiClient;
 
-  private container: ContainerInstance;
+  private targetUserInfo: TargetUserInfoProps;
 
   constructor(opts: ContainerInstance) {
-    this.container = opts;
     this.instagram = opts.scope.instance;
+    this.targetUserInfo = opts.targetUserInfo;
   }
 
   async findPostById(postId: string) {
@@ -21,9 +22,7 @@ class PostsService {
   }
 
   async getRecentPosts() {
-    const { targetUserInfo } = this.container;
-
-    const feed = await this.instagram.feed.user(targetUserInfo.pk);
+    const feed = await this.instagram.feed.user(this.targetUserInfo.pk);
     const list = await feed.items();
 
     // To keep getting content, maybe on a future function:

@@ -17,6 +17,34 @@ export default class PostsRoute extends BaseRoute {
     this.userService = userService;
   }
 
+  @route('/info/:username')
+  @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
+  @GET()
+  async getInfoUser(req: Request, res: Response) {
+    try {
+      const ret = await this.userService.userInfo();
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/follow/post/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @POST()
+  async followUserByPostId(req: Request, res: Response) {
+    const { idPost } = req.params;
+
+    try {
+      const ret = await this.userService.followUserByPostId(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
   @route('/follow/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @POST()

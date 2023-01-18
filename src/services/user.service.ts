@@ -18,6 +18,13 @@ class PostsService {
     return this.targetUserInfo;
   }
 
+  async followUserByPostId(postId: string) {
+    const postInfo = await this.instagram.media.info(postId);
+    const userId = postInfo.items[0].user.pk;
+    const ret = await this.instagram.friendship.create(userId);
+    return ret;
+  }
+
   async follow() {
     const userId = this.targetUserInfo.pk;
 
