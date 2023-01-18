@@ -61,7 +61,6 @@ class PostsService {
                 }
               }
               if (!repeatedComment) {
-                console.log(comment.text);
                 comments.push(comment);
               }
             }
@@ -103,7 +102,11 @@ class PostsService {
     const timestamp = new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000;
     const link = `https://www.instagram.com/p/${parser.instagramIdToUrlSegment(postId)}`;
 
-    return console.log(`Commented media ${link} at ${timestamp}`);
+    return {
+      status: 'ok',
+      timestamp,
+      link,
+    };
   }
 }
 

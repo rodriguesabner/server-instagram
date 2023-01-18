@@ -50,7 +50,7 @@ export default class PostsRoute extends BaseRoute {
   async comment(req: Request, res: Response) {
     try {
       const { idPost } = req.params;
-      const comment = req.body;
+      const { comment } = req.body;
 
       const ret = await this.postsService.commentPost(idPost, comment);
 

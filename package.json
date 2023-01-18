@@ -12,7 +12,8 @@
     "node": ">=14.16"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn src/index.ts"
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "lint": "eslint --ext .ts src/"
   },
   "dependencies": {
     "@types/inquirer": "^9.0.3",
