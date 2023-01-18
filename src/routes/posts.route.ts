@@ -17,6 +17,20 @@ export default class PostsRoute extends BaseRoute {
     this.postsService = postsService;
   }
 
+  @route('/byId/:idPost')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @GET()
+  async findPostById(req: Request, res: Response) {
+    try {
+      const { idPost } = req.params;
+      const ret = await this.postsService.findPostById(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
   @route('/recent/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()

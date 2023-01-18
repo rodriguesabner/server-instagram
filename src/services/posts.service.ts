@@ -15,6 +15,11 @@ class PostsService {
     this.instagram = opts.scope.instance;
   }
 
+  async findPostById(postId: string) {
+    const postInfo = await this.instagram.media.info(postId);
+    return postInfo.items;
+  }
+
   async getRecentPosts() {
     const { targetUserInfo } = this.container;
 
