@@ -27,50 +27,51 @@ class EngineService {
   }
 
   public async login(username: string, password: string) {
-    const ig: InstagramInstanceProps = withFbnsAndRealtime(new IgApiClient());
+    // @ts-ignore
+    const instagram: InstagramInstanceProps = withFbnsAndRealtime(new IgApiClient());
 
     console.log('Not using proxy');
     console.log('Mobile/Residential proxy recommended');
 
-    ig.state.generateDevice(username);
+    instagram.state.generateDevice(username);
     console.log(`Trying to log with ${username}`);
 
-    const hasCookies = await this.cookiesUtil.loadCookies(ig, username);
+    const hasCookies = await this.cookiesUtil.loadCookies(instagram, username);
 
-    ig.request.end$.subscribe(async () => {
-      const cookies = await ig.state.serializeCookieJar();
+    instagram.request.end$.subscribe(async () => {
+      const cookies = await instagram.state.serializeCookieJar();
       const state = {
-        deviceString: ig.state.deviceString,
-        deviceId: ig.state.deviceId,
-        uuid: ig.state.uuid,
-        phoneId: ig.state.phoneId,
-        adid: ig.state.adid,
-        build: ig.state.build,
+        deviceString: instagram.state.deviceString,
+        deviceId: instagram.state.deviceId,
+        uuid: instagram.state.uuid,
+        phoneId: instagram.state.phoneId,
+        adid: instagram.state.adid,
+        build: instagram.state.build,
       };
 
       this.cookiesUtil.saveCookies(username, cookies, state);
 
-      await ig.state.deserializeCookieJar(JSON.stringify(cookies));
-      ig.state.deviceString = state.deviceString;
-      ig.state.deviceId = state.deviceId;
-      ig.state.uuid = state.uuid;
-      ig.state.phoneId = state.phoneId;
-      ig.state.adid = state.adid;
-      ig.state.build = state.build;
+      await instagram.state.deserializeCookieJar(JSON.stringify(cookies));
+      instagram.state.deviceString = state.deviceString;
+      instagram.state.deviceId = state.deviceId;
+      instagram.state.uuid = state.uuid;
+      instagram.state.phoneId = state.phoneId;
+      instagram.state.adid = state.adid;
+      instagram.state.build = state.build;
     });
 
-    await ig.simulate.preLoginFlow();
+    await instagram.simulate.preLoginFlow();
 
     const user = {
       username,
       password,
     };
-    const result: any = await this.tryToLogin(ig, hasCookies, user, false);
+    const result: any = await this.tryToLogin(instagram, hasCookies, user, false);
 
     result.antiBanMode = false;
     result.showRealtimeNotifications = false;
     // @ts-ignore
-    result.realtime = ig.realtime;
+    result.realtime = instagram.realtime;
 
     const onlineMode = (process.env.ONLINE_MODE != null && process.env.ONLINE_MODE === 'true');
 
@@ -79,16 +80,16 @@ class EngineService {
         graphQlSubs: [
           GraphQLSubscriptions.getAppPresenceSubscription(),
 
-          GraphQLSubscriptions.getZeroProvisionSubscription(ig.state.phoneId),
+          GraphQLSubscriptions.getZeroProvisionSubscription(instagram.state.phoneId),
           GraphQLSubscriptions.getDirectStatusSubscription(),
-          GraphQLSubscriptions.getDirectTypingSubscription(ig.state.cookieUserId),
-          GraphQLSubscriptions.getAsyncAdSubscription(ig.state.cookieUserId),
+          GraphQLSubscriptions.getDirectTypingSubscription(instagram.state.cookieUserId),
+          GraphQLSubscriptions.getAsyncAdSubscription(instagram.state.cookieUserId),
         ],
         skywalkerSubs: [
-          SkywalkerSubscriptions.directSub(ig.state.cookieUserId),
-          SkywalkerSubscriptions.liveSub(ig.state.cookieUserId),
+          SkywalkerSubscriptions.directSub(instagram.state.cookieUserId),
+          SkywalkerSubscriptions.liveSub(instagram.state.cookieUserId),
         ],
-        irisData: await ig.feed.directInbox().request(),
+        irisData: await instagram.feed.directInbox().request(),
       });
     } else {
       console.log('Online Mode disabled');
@@ -96,7 +97,7 @@ class EngineService {
 
     this.sessions.push({
       session_name: username,
-      instance: ig,
+      instance: instagram,
     });
 
     return this.clone(result);
@@ -124,6 +125,7 @@ class EngineService {
       }
 
       try {
+        // @ts-ignore
         ig.loggedInUser = await ig.account.currentUser();
 
         if (!silentMode) console.log('Logged in');
@@ -131,6 +133,7 @@ class EngineService {
         console.log(e);
         console.log('Login failed from cookie | Removing incorrect cookie | Trying to regenerate...');
 
+        // @ts-ignore
         ig.loggedInUser = {};
         ig.loggedInUser.username = user.username;
         ig.loggedInUser.inputLogin = user.username;

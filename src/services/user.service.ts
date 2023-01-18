@@ -1,11 +1,11 @@
 /* eslint-disable no-loop-func, no-await-in-loop */
-import { IgApiClient } from 'instagram-private-api';
 import { ContainerInstance } from '../interfaces/container.interface';
 import TargetUserInfoProps from '../interfaces/infoUser.interface';
 import { executeSleep } from '../common/utils';
+import InstagramInstanceProps from '../interfaces/instagram.interface';
 
 class PostsService {
-  private instagram: IgApiClient;
+  private instagram: InstagramInstanceProps;
 
   private targetUserInfo: TargetUserInfoProps;
 
