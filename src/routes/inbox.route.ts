@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {
-  before, GET, route,
+  before, GET, POST, route,
 } from 'awilix-express';
 import { BaseRoute } from '../common/baseRoute';
 import AuthMiddleware from '../middleware/auth.middleware';
@@ -35,6 +35,26 @@ export default class InboxRoute extends BaseRoute {
   async getPendingInbox(req: Request, res: Response) {
     try {
       const ret = await this.inboxService.getPendingInbox();
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/send/:userId')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @POST()
+  async sendMessage(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      const { threadId, message } = req.body;
+
+      if (!message) {
+        throw new Error('Message is required');
+      }
+
+      const ret = await this.inboxService.sendMessage({ userId, threadId, message });
 
       this.ok(res, ret);
     } catch (err: any) {

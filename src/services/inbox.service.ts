@@ -2,6 +2,7 @@
 import { ContainerInstance } from '../interfaces/container.interface';
 import TargetUserInfoProps from '../interfaces/infoUser.interface';
 import InstagramInstanceProps from '../interfaces/instagram.interface';
+import { SendDirectProps } from '../interfaces/inbox.interface';
 
 class InboxService {
   private instagram: InstagramInstanceProps;
@@ -90,6 +91,28 @@ class InboxService {
       },
     }));
     return directMessagesPendingFormated;
+  }
+
+  async sendMessage(props: SendDirectProps) {
+    let sendDm = null;
+    let threadEntity = null;
+
+    if (props.threadId != null) {
+      threadEntity = this.instagram.entity.directThread(props.threadId);
+    } else if (props.userId) {
+      threadEntity = this.instagram.entity.directThread([props.userId.toString()]);
+    }
+
+    if (!threadEntity) {
+      return 'invalid_threadEntity';
+    }
+
+    sendDm = await threadEntity.broadcastText(props.message);
+    if (sendDm) {
+      return { status: 'ok', threadId: props.threadId };
+    }
+
+    throw new Error('Error sending message');
   }
 }
 
