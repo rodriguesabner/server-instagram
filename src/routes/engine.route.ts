@@ -25,7 +25,7 @@ export default class MessageRoute extends BaseRoute {
       const token = jwt.sign({
         session_name: SESSION_NAME,
       }, process.env.JWT_SECRET ?? 'define', {
-        expiresIn: '1y',
+        expiresIn: '4h',
       });
 
       this.ok(res, {
