@@ -12,7 +12,7 @@ import inquirer from 'inquirer';
 import shortid from 'shortid';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import { Container } from '../interfaces/container.interface';
+import { ContainerInstance } from '../interfaces/container.interface';
 import CookiesProps from '../interfaces/cookies.interface';
 import InstagramInstanceProps from '../interfaces/instagram.interface';
 
@@ -21,7 +21,7 @@ class EngineService {
 
   private sessions: any[];
 
-  constructor(opts: Container) {
+  constructor(opts: ContainerInstance) {
     this.sessions = opts.sessions;
     this.cookiesUtil = opts.cookiesUtil;
   }

@@ -14,6 +14,10 @@ class PostsService {
     this.targetUserInfo = opts.targetUserInfo;
   }
 
+  public async getSessionInfo() {
+    return this.instagram.loggedInUser;
+  }
+
   async userInfo() {
     return this.targetUserInfo;
   }

@@ -17,6 +17,22 @@ export default class PostsRoute extends BaseRoute {
     this.userService = userService;
   }
 
+  @route('/session/info')
+  @before([AuthMiddleware, IsConnectedMiddleware])
+  @GET()
+  async getSessionInfo(req: Request, res: Response) {
+    try {
+      const ret = await this.userService.getSessionInfo();
+
+      this.ok(res, {
+        session: ret,
+        connected: true,
+      });
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
   @route('/info/:username')
   @before([AuthMiddleware, IsConnectedMiddleware, InfoUserMiddleware])
   @GET()
