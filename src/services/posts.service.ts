@@ -2,6 +2,8 @@
 // @ts-ignore
 import parser from 'instagram-id-to-url-segment';
 import _ from 'lodash';
+import fs from 'fs';
+import { StickerBuilder } from 'instagram-private-api/dist/sticker-builder';
 import { ContainerInstance } from '../interfaces/container.interface';
 import { sleep } from '../common/utils';
 import TargetUserInfoProps from '../interfaces/infoUser.interface';
@@ -155,6 +157,31 @@ class PostsService {
       timestamp,
       link,
     };
+  }
+
+  async uploadPostImage(description: string, filePath: string) {
+    const file = fs.readFileSync(filePath);
+
+    const ret = await this.instagram.publish.photo({
+      file,
+      caption: description,
+    });
+
+    fs.unlinkSync(filePath);
+
+    return ret;
+  }
+
+  async uploadStoryImage(filePath: string) {
+    const file = fs.readFileSync(filePath);
+
+    const ret = await this.instagram.publish.story({
+      file,
+    });
+
+    fs.unlinkSync(filePath);
+
+    return ret;
   }
 }
 

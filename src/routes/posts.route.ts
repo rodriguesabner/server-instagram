@@ -2,11 +2,13 @@ import { Request, Response } from 'express';
 import {
   before, GET, POST, route,
 } from 'awilix-express';
+import path from 'path';
 import { BaseRoute } from '../common/baseRoute';
 import PostsService from '../services/posts.service';
 import InfoUserMiddleware from '../middleware/infoUser.middleware';
 import AuthMiddleware from '../middleware/auth.middleware';
 import IsConnectedMiddleware from '../middleware/isConnected.middleware';
+import UploadMiddleware from '../middleware/upload.middleware';
 
 @route('/posts')
 export default class PostsRoute extends BaseRoute {
@@ -95,6 +97,46 @@ export default class PostsRoute extends BaseRoute {
     try {
       const { idPost } = req.params;
       const ret = await this.postsService.unlikePost(idPost);
+
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/upload/image')
+  @before([AuthMiddleware, IsConnectedMiddleware, UploadMiddleware.single('file')])
+  @POST()
+  async uploadPostImage(req: Request, res: Response) {
+    try {
+      const { description } = req.body;
+      const { file } = req;
+
+      if (!file) {
+        throw new Error('No file uploaded');
+      }
+
+      const filename = path.resolve(file.destination, file.filename);
+      const ret = await this.postsService.uploadPostImage(description, filename);
+      this.ok(res, ret);
+    } catch (err: any) {
+      this.fail(res, err);
+    }
+  }
+
+  @route('/upload/image/story')
+  @before([AuthMiddleware, IsConnectedMiddleware, UploadMiddleware.single('file')])
+  @POST()
+  async uploadStoryImage(req: Request, res: Response) {
+    try {
+      const { file } = req;
+
+      if (!file) {
+        throw new Error('No file uploaded');
+      }
+
+      const filename = path.resolve(file.destination, file.filename);
+      const ret = await this.postsService.uploadStoryImage(filename);
 
       this.ok(res, ret);
     } catch (err: any) {
